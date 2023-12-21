@@ -18,6 +18,7 @@
 		E80CA3F62B34B46200F012DE /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3F52B34B46200F012DE /* HTTPMethod.swift */; };
 		E80CA3F92B34B4C700F012DE /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3F82B34B4C700F012DE /* NetworkError.swift */; };
 		E80CA3FB2B34B7D700F012DE /* AddNewAdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3FA2B34B7D700F012DE /* AddNewAdViewModel.swift */; };
+		E80CA3FE2B34C7CB00F012DE /* CustomTextFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3FD2B34C7CB00F012DE /* CustomTextFields.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		E80CA3F52B34B46200F012DE /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		E80CA3F82B34B4C700F012DE /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		E80CA3FA2B34B7D700F012DE /* AddNewAdViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAdViewModel.swift; sourceTree = "<group>"; };
+		E80CA3FD2B34C7CB00F012DE /* CustomTextFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFields.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 		E80CA3D62B34AC3900F012DE /* xeDemo */ = {
 			isa = PBXGroup;
 			children = (
+				E80CA3FC2B34C70000F012DE /* Custom Views */,
 				E80CA3F72B34B48B00F012DE /* Enum */,
 				E80CA3F02B34B0BF00F012DE /* Services */,
 				E80CA3ED2B34AEA400F012DE /* Models */,
@@ -120,6 +123,14 @@
 				E80CA3F82B34B4C700F012DE /* NetworkError.swift */,
 			);
 			path = Enum;
+			sourceTree = "<group>";
+		};
+		E80CA3FC2B34C70000F012DE /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				E80CA3FD2B34C7CB00F012DE /* CustomTextFields.swift */,
+			);
+			path = "Custom Views";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -198,6 +209,7 @@
 				E80CA3F62B34B46200F012DE /* HTTPMethod.swift in Sources */,
 				E80CA3FB2B34B7D700F012DE /* AddNewAdViewModel.swift in Sources */,
 				E80CA3EF2B34AED400F012DE /* AddNewAdViewController.swift in Sources */,
+				E80CA3FE2B34C7CB00F012DE /* CustomTextFields.swift in Sources */,
 				E80CA3F42B34B32900F012DE /* Resource.swift in Sources */,
 				E80CA3F22B34B14B00F012DE /* WebService.swift in Sources */,
 				E80CA3DA2B34AC3900F012DE /* SceneDelegate.swift in Sources */,
