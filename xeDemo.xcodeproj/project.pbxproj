@@ -13,6 +13,11 @@
 		E80CA3E12B34AC3A00F012DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E80CA3E02B34AC3A00F012DE /* Assets.xcassets */; };
 		E80CA3E42B34AC3A00F012DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E80CA3E22B34AC3A00F012DE /* LaunchScreen.storyboard */; };
 		E80CA3EF2B34AED400F012DE /* AddNewAdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3EE2B34AED400F012DE /* AddNewAdViewController.swift */; };
+		E80CA3F22B34B14B00F012DE /* WebService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3F12B34B14B00F012DE /* WebService.swift */; };
+		E80CA3F42B34B32900F012DE /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3F32B34B32900F012DE /* Resource.swift */; };
+		E80CA3F62B34B46200F012DE /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3F52B34B46200F012DE /* HTTPMethod.swift */; };
+		E80CA3F92B34B4C700F012DE /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3F82B34B4C700F012DE /* NetworkError.swift */; };
+		E80CA3FB2B34B7D700F012DE /* AddNewAdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3FA2B34B7D700F012DE /* AddNewAdViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +29,11 @@
 		E80CA3E32B34AC3A00F012DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E80CA3E52B34AC3A00F012DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E80CA3EE2B34AED400F012DE /* AddNewAdViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAdViewController.swift; sourceTree = "<group>"; };
+		E80CA3F12B34B14B00F012DE /* WebService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebService.swift; sourceTree = "<group>"; };
+		E80CA3F32B34B32900F012DE /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
+		E80CA3F52B34B46200F012DE /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		E80CA3F82B34B4C700F012DE /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
+		E80CA3FA2B34B7D700F012DE /* AddNewAdViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAdViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +66,7 @@
 		E80CA3D62B34AC3900F012DE /* xeDemo */ = {
 			isa = PBXGroup;
 			children = (
+				E80CA3F72B34B48B00F012DE /* Enum */,
 				E80CA3F02B34B0BF00F012DE /* Services */,
 				E80CA3ED2B34AEA400F012DE /* Models */,
 				E80CA3EC2B34AE9600F012DE /* ViewModels */,
@@ -81,6 +92,7 @@
 		E80CA3EC2B34AE9600F012DE /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				E80CA3FA2B34B7D700F012DE /* AddNewAdViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -88,6 +100,7 @@
 		E80CA3ED2B34AEA400F012DE /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E80CA3F32B34B32900F012DE /* Resource.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -95,8 +108,18 @@
 		E80CA3F02B34B0BF00F012DE /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				E80CA3F12B34B14B00F012DE /* WebService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		E80CA3F72B34B48B00F012DE /* Enum */ = {
+			isa = PBXGroup;
+			children = (
+				E80CA3F52B34B46200F012DE /* HTTPMethod.swift */,
+				E80CA3F82B34B4C700F012DE /* NetworkError.swift */,
+			);
+			path = Enum;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -170,8 +193,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E80CA3DC2B34AC3900F012DE /* ViewController.swift in Sources */,
+				E80CA3F92B34B4C700F012DE /* NetworkError.swift in Sources */,
 				E80CA3D82B34AC3900F012DE /* AppDelegate.swift in Sources */,
+				E80CA3F62B34B46200F012DE /* HTTPMethod.swift in Sources */,
+				E80CA3FB2B34B7D700F012DE /* AddNewAdViewModel.swift in Sources */,
 				E80CA3EF2B34AED400F012DE /* AddNewAdViewController.swift in Sources */,
+				E80CA3F42B34B32900F012DE /* Resource.swift in Sources */,
+				E80CA3F22B34B14B00F012DE /* WebService.swift in Sources */,
 				E80CA3DA2B34AC3900F012DE /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
