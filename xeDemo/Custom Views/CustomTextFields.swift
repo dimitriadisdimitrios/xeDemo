@@ -9,7 +9,9 @@ import UIKit
 
 class CustomTextFields: UIView {
 
-    let titleLabel = {
+    weak var delegate: AddNewAdDelegate?
+
+    private let titleLabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.font = .boldSystemFont(ofSize: 15)
@@ -17,16 +19,17 @@ class CustomTextFields: UIView {
         return view
     }()
 
-    let fieldTextField = {
+    private lazy var fieldTextField = {
         let view = UITextField()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.placeholder = "Type something"
         view.font = .systemFont(ofSize: 13)
         view.backgroundColor = .clear
+        view.delegate = self
         return view
     }()
 
-    let textFieldBackground = {
+    private let textFieldBackground = {
         let view = UIView()
         view.layer.cornerRadius = 5
         view.backgroundColor = .lightGray.withAlphaComponent(0.5)
@@ -69,5 +72,13 @@ class CustomTextFields: UIView {
 
     func config(title: String) {
         self.titleLabel.text = title
+    }
+}
+
+extension CustomTextFields: UITextFieldDelegate {
+
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        delegate?.textFieldChanged(text: text,vc: self)
     }
 }

@@ -9,6 +9,8 @@ import UIKit
 
 class AddNewAdViewController: UIViewController {
 
+    private let vm = AddNewAdViewModel()
+
     private let titleLabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -41,31 +43,35 @@ class AddNewAdViewController: UIViewController {
         return view
     }()
 
-    private let titleTextField = {
+    private lazy var titleTextField = {
         let view = CustomTextFields()
         view.config(title: "Title")
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         return view
     }()
 
-    private let locationTextField = {
+    private lazy var locationTextField = {
         let view = CustomTextFields()
         view.config(title: "Location")
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         return view
     }()
 
-    private let priceTextField = {
+    private lazy var priceTextField = {
         let view = CustomTextFields()
         view.config(title: "Price")
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         return view
     }()
 
-    private let descriptionTextField = {
+    private lazy var descriptionTextField = {
         let view = CustomTextFields()
         view.config(title: "Description")
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.delegate = self
         return view
     }()
 
@@ -128,5 +134,23 @@ class AddNewAdViewController: UIViewController {
     }
 
     @objc private func submitTapped() {
+    }
+}
+
+extension AddNewAdViewController: AddNewAdDelegate {
+
+    func textFieldChanged(text: String, vc: CustomTextFields) {
+        switch vc {
+        case titleTextField:
+            vm.title = text
+        case locationTextField:
+            vm.location = text
+        case priceTextField:
+            vm.price = Float(text)
+        case descriptionTextField:
+            vm.description = text
+        default:
+            return
+        }
     }
 }

@@ -9,4 +9,10 @@ import Foundation
 
 class AddNewAdViewModel {
     
+    var title: String?
+    var location: String?
+    var price: Float?
+    var description: String?
+
+    
 }
