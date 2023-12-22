@@ -78,6 +78,7 @@ class AddNewAdViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupBinding()
     }
 
     private func setupUI() {
@@ -130,6 +131,15 @@ class AddNewAdViewController: UIViewController {
         ])
     }
 
+    private func setupBinding() {
+        vm.location.bind { [weak self] value in
+            guard let self else { return }
+            self.vm.getSearchedLocation { result in
+                print("")
+            }
+        }
+    }
+
     @objc private func clearTapped() {
     }
 
@@ -144,7 +154,7 @@ extension AddNewAdViewController: AddNewAdDelegate {
         case titleTextField:
             vm.title = text
         case locationTextField:
-            vm.location = text
+            vm.location.value = text
         case priceTextField:
             vm.price = Float(text)
         case descriptionTextField:
