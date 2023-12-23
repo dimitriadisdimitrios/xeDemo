@@ -109,11 +109,7 @@ class CustomTextFieldsCell: UITableViewCell {
         case .location:
             textValue = viewModel.location.value.mainText
         case .price:
-            if let priceValue = viewModel.price.value {
-                textValue = "\(priceValue)"
-            } else {
-                textValue = ""
-            }
+            textValue = "\(viewModel.price.value)"
         case .description:
             textValue = viewModel.description ?? ""
         case .none:

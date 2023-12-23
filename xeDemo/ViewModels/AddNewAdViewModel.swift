@@ -11,7 +11,7 @@ class AddNewAdViewModel {
 
     var title: String?
     var location: DynamicVar<SearchedLocation> = DynamicVar(SearchedLocation())
-    var price: DynamicVar<Float?> = DynamicVar(nil)
+    var price: DynamicVar<String> = DynamicVar("")
     var description: String?
     var warningsToShow: DynamicVar<[AdCellType]> = DynamicVar([])
 
@@ -27,8 +27,8 @@ class AddNewAdViewModel {
     }
 
     var isPriceValid: Bool {
-        guard let value = price.value, let regex = try? NSRegularExpression(pattern: "^\\d+((\\.|,)\\d+){0,1}$", options: []) else { return false }
-        let matches = regex.matches(in: "\(value)", options: [], range: NSRange(location: 0, length: "\(value)".utf16.count))
+        guard let regex = try? NSRegularExpression(pattern: "^\\d+((\\.|,)\\d+){0,1}$", options: []) else { return false }
+        let matches = regex.matches(in: "\(price.value)", options: [], range: NSRange(location: 0, length: "\(price.value)".utf16.count))
         return !matches.isEmpty
     }
 
@@ -50,7 +50,7 @@ class AddNewAdViewModel {
     func clearData() {
         title = ""
         location.value = SearchedLocation()
-        price.value = nil
+        price.value = ""
         description = ""
         delegate?.clearButtonTapped()
     }

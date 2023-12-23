@@ -126,7 +126,9 @@ class AddNewAdViewController: UIViewController {
 
         vm.price.bind { [weak self] value in
             guard let self else { return }
+            tableView.beginUpdates()
             vm.isPriceValid ? vm.hideWarningFor(.price) : vm.showWarningFor(.price)
+            tableView.endUpdates()
         }
 
         vm.warningsToShow.bind { [weak self] value in
@@ -172,14 +174,13 @@ extension AddNewAdViewController: AddNewAdDelegate {
                 vm.hideWarningFor(.location)
             }
         case .price:
-            vm.price.value = Float(text.replacingOccurrences(of: ",", with: "."))
+            vm.price.value = text
         case .description:
             vm.description = text
         }
     }
 
     func clearButtonTapped() {
-        vm = AddNewAdViewModel()
         tableView.reloadData()
     }
 }
