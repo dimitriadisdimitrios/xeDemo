@@ -18,11 +18,12 @@
 		E80CA3F62B34B46200F012DE /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3F52B34B46200F012DE /* HTTPMethod.swift */; };
 		E80CA3F92B34B4C700F012DE /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3F82B34B4C700F012DE /* NetworkError.swift */; };
 		E80CA3FB2B34B7D700F012DE /* AddNewAdViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3FA2B34B7D700F012DE /* AddNewAdViewModel.swift */; };
-		E80CA3FE2B34C7CB00F012DE /* CustomTextFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3FD2B34C7CB00F012DE /* CustomTextFields.swift */; };
+		E80CA3FE2B34C7CB00F012DE /* CustomTextFieldsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3FD2B34C7CB00F012DE /* CustomTextFieldsCell.swift */; };
 		E80CA4022B34DCDA00F012DE /* AddNewAdDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA4012B34DCDA00F012DE /* AddNewAdDelegate.swift */; };
 		E80CA4042B35F25E00F012DE /* DynamicVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA4032B35F25E00F012DE /* DynamicVar.swift */; };
 		E80CA4062B35F50200F012DE /* SearchedLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA4052B35F50200F012DE /* SearchedLocations.swift */; };
 		E80CA4082B37395D00F012DE /* NewAdForSubmit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA4072B37395D00F012DE /* NewAdForSubmit.swift */; };
+		E80CA40A2B37496700F012DE /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA4092B37496700F012DE /* File.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,11 +40,12 @@
 		E80CA3F52B34B46200F012DE /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
 		E80CA3F82B34B4C700F012DE /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		E80CA3FA2B34B7D700F012DE /* AddNewAdViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAdViewModel.swift; sourceTree = "<group>"; };
-		E80CA3FD2B34C7CB00F012DE /* CustomTextFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFields.swift; sourceTree = "<group>"; };
+		E80CA3FD2B34C7CB00F012DE /* CustomTextFieldsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldsCell.swift; sourceTree = "<group>"; };
 		E80CA4012B34DCDA00F012DE /* AddNewAdDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewAdDelegate.swift; sourceTree = "<group>"; };
 		E80CA4032B35F25E00F012DE /* DynamicVar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicVar.swift; sourceTree = "<group>"; };
 		E80CA4052B35F50200F012DE /* SearchedLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchedLocations.swift; sourceTree = "<group>"; };
 		E80CA4072B37395D00F012DE /* NewAdForSubmit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAdForSubmit.swift; sourceTree = "<group>"; };
+		E80CA4092B37496700F012DE /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 			children = (
 				E80CA3F52B34B46200F012DE /* HTTPMethod.swift */,
 				E80CA3F82B34B4C700F012DE /* NetworkError.swift */,
+				E80CA4092B37496700F012DE /* File.swift */,
 			);
 			path = Enum;
 			sourceTree = "<group>";
@@ -140,7 +143,7 @@
 		E80CA3FC2B34C70000F012DE /* Custom Views */ = {
 			isa = PBXGroup;
 			children = (
-				E80CA3FD2B34C7CB00F012DE /* CustomTextFields.swift */,
+				E80CA3FD2B34C7CB00F012DE /* CustomTextFieldsCell.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -230,9 +233,10 @@
 				E80CA3FB2B34B7D700F012DE /* AddNewAdViewModel.swift in Sources */,
 				E80CA4082B37395D00F012DE /* NewAdForSubmit.swift in Sources */,
 				E80CA3EF2B34AED400F012DE /* AddNewAdViewController.swift in Sources */,
-				E80CA3FE2B34C7CB00F012DE /* CustomTextFields.swift in Sources */,
+				E80CA3FE2B34C7CB00F012DE /* CustomTextFieldsCell.swift in Sources */,
 				E80CA4062B35F50200F012DE /* SearchedLocations.swift in Sources */,
 				E80CA3F42B34B32900F012DE /* Resource.swift in Sources */,
+				E80CA40A2B37496700F012DE /* File.swift in Sources */,
 				E80CA3F22B34B14B00F012DE /* WebService.swift in Sources */,
 				E80CA4042B35F25E00F012DE /* DynamicVar.swift in Sources */,
 				E80CA4022B34DCDA00F012DE /* AddNewAdDelegate.swift in Sources */,

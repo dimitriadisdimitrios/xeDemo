@@ -13,8 +13,14 @@ class AddNewAdViewModel {
     var location: DynamicVar<SearchedLocation> = DynamicVar(SearchedLocation())
     var price: DynamicVar<Float?> = DynamicVar(nil)
     var description: String?
+    var warningsToShow: DynamicVar<[AdCellType]> = DynamicVar([])
 
     weak var delegate: AddNewAdDelegate?
+
+    lazy var isWarningActivateFor: (AdCellType) -> Bool = { [weak self] type in
+        guard let self else { return false }
+        return warningsToShow.value.contains(where: { $0 == type })
+    }
 
     var isLocationValid:  Bool {
         location.value.mainText != "" && location.value.placeId != ""
@@ -54,5 +60,18 @@ class AddNewAdViewModel {
         //FIXME: Set the right location instead of this
         //FIXME: Add locationObject in vm
         location.value = SearchedLocation(mainText: text)
+    }
+
+    func showWarningFor(_ type: AdCellType) {
+        guard !warningsToShow.value.contains(where: { $0 == type}) else { return }
+        warningsToShow.value.append(type)
+    }
+
+    func hideWarningFor(_ type: AdCellType) {
+        warningsToShow.value.removeAll(where: { $0 == type})
+    }
+
+    func hideAllWarnings() {
+        warningsToShow.value.removeAll()
     }
 }

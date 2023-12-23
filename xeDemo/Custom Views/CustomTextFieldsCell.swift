@@ -1,5 +1,5 @@
 //
-//  CustomTextFields.swift
+//  CustomTextFieldsCell.swift
 //  xeDemo
 //
 //  Created by Dimitrios Dimitriadis on 21/12/23.
@@ -7,10 +7,12 @@
 
 import UIKit
 
-class CustomTextFields: UIView {
+class CustomTextFieldsCell: UITableViewCell {
 
     weak var delegate: AddNewAdDelegate?
-    
+    static let identifier = "CustomTextFields"
+    private var cellType: AdCellType!
+
     var isFieldEmpty: Bool {
         fieldTextField.text == "" || fieldTextField.text == nil
     }
@@ -49,32 +51,34 @@ class CustomTextFields: UIView {
         return view
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: .zero)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .none
         setupUI()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     private func setupUI() {
 
-        addSubview(titleLabel)
-        addSubview(textFieldBackground)
-        addSubview(fieldTextField)
-        addSubview(warningLabel)
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(textFieldBackground)
+        contentView.addSubview(fieldTextField)
+        contentView.addSubview(warningLabel)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
 
             fieldTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            fieldTextField.leadingAnchor.constraint(equalTo: leadingAnchor),
-            fieldTextField.trailingAnchor.constraint(equalTo: trailingAnchor),
+            fieldTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
+            fieldTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             fieldTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
+            fieldTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30),
 
             textFieldBackground.topAnchor.constraint(equalTo: fieldTextField.topAnchor, constant: -5),
             textFieldBackground.bottomAnchor.constraint(equalTo: fieldTextField.bottomAnchor, constant: 10),
@@ -88,29 +92,46 @@ class CustomTextFields: UIView {
         ])
     }
 
-    func config(title: String, numPad: Bool = false) {
-        titleLabel.text = title
-        fieldTextField.keyboardType = numPad ? .decimalPad : .default
+    func config(vm: AddNewAdViewModel, type: AdCellType, delegate: AddNewAdDelegate) {
+        titleLabel.text = type.tilte
+        fieldTextField.keyboardType = type == .price ? .decimalPad : .default
+        self.delegate = delegate
+        cellType = type
+        setTextInTextfield(vm)
+        setWarningMsg(viewModel: vm)
     }
 
-    func config(value: String) {
-        fieldTextField.text = value
+    private func setTextInTextfield(_ viewModel: AddNewAdViewModel) {
+        let textValue: String
+        switch cellType {
+        case .title:
+            textValue = viewModel.title ?? ""
+        case .location:
+            textValue = viewModel.location.value.mainText
+        case .price:
+            if let priceValue = viewModel.price.value {
+                textValue = "\(priceValue)"
+            } else {
+                textValue = ""
+            }
+        case .description:
+            textValue = viewModel.description ?? ""
+        case .none:
+            return
+        }
+        fieldTextField.text = textValue
     }
 
-    func setWarningMsg(text: String, visible: Bool) {
-        warningLabel.isHidden = !visible || fieldTextField.text == ""
-        warningLabel.text = text
-    }
-
-    func hideWarningMsg() {
-        warningLabel.isHidden = true
+    func setWarningMsg(viewModel: AddNewAdViewModel) {
+        warningLabel.isHidden = !viewModel.isWarningActivateFor(cellType) || fieldTextField.text == ""
+        warningLabel.text = cellType.warningMessage
     }
 }
 
-extension CustomTextFields: UITextFieldDelegate {
+extension CustomTextFieldsCell: UITextFieldDelegate {
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
         guard let text = textField.text else { return }
-        delegate?.textFieldChanged(text: text,vc: self)
+        delegate?.textFieldChanged(text: text, type: cellType)
     }
 }

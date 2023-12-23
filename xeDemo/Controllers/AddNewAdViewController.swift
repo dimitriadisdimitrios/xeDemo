@@ -9,10 +9,11 @@ import UIKit
 
 class AddNewAdViewController: UIViewController {
 
-    private let vm = AddNewAdViewModel()
+    private var vm = AddNewAdViewModel()
+    private let MAX_NUMBER_OF_TEXTFIELDS = AdCellType.allCases.count
 
     private var areRequirementsFullfilled: Bool {
-        titleTextField.isFieldEmpty || vm.isLocationValid
+        !(vm.title?.isEmpty ?? true) || vm.isLocationValid
     }
 
     private let titleLabel = {
@@ -22,6 +23,13 @@ class AddNewAdViewController: UIViewController {
         view.textColor = .black
         view.numberOfLines = 0
         view.text = "New Property Classified"
+        return view
+    }()
+
+    private let btnsContainer = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .lightGray
         return view
     }()
 
@@ -49,34 +57,14 @@ class AddNewAdViewController: UIViewController {
         return view
     }()
 
-    private lazy var titleTextField = {
-        let view = CustomTextFields()
-        view.config(title: "Title")
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.delegate = self
-        return view
-    }()
 
-    private lazy var locationTextField = {
-        let view = CustomTextFields()
-        view.config(title: "Location")
+    private lazy var tableView = {
+        let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.delegate = self
-        return view
-    }()
-
-    private lazy var priceTextField = {
-        let view = CustomTextFields()
-        view.config(title: "Price (€)", numPad: true)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.delegate = self
-        return view
-    }()
-
-    private lazy var descriptionTextField = {
-        let view = CustomTextFields()
-        view.config(title: "Description")
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.register(CustomTextFieldsCell.self, forCellReuseIdentifier: CustomTextFieldsCell.identifier)
+        view.bounces = false
+        view.separatorStyle = .none
+        view.dataSource = self
         view.delegate = self
         return view
     }()
@@ -92,12 +80,10 @@ class AddNewAdViewController: UIViewController {
         view.backgroundColor = .white.withAlphaComponent(0.9)
 
         view.addSubview(titleLabel)
-        view.addSubview(confirmBtn)
-        view.addSubview(clearBtn)
-        view.addSubview(titleTextField)
-        view.addSubview(locationTextField)
-        view.addSubview(priceTextField)
-        view.addSubview(descriptionTextField)
+        view.addSubview(btnsContainer)
+        view.addSubview(tableView)
+        btnsContainer.addSubview(confirmBtn)
+        btnsContainer.addSubview(clearBtn)
 
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -105,35 +91,25 @@ class AddNewAdViewController: UIViewController {
             titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
 
-            confirmBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+            btnsContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            btnsContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            btnsContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            btnsContainer.heightAnchor.constraint(equalToConstant: 50),
+
+            confirmBtn.bottomAnchor.constraint(equalTo: btnsContainer.bottomAnchor, constant: -5),
             confirmBtn.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.25),
-            confirmBtn.trailingAnchor.constraint(equalTo: view.centerXAnchor, constant: -12.5),
+            confirmBtn.trailingAnchor.constraint(equalTo: btnsContainer.centerXAnchor, constant: -12.5),
             confirmBtn.heightAnchor.constraint(equalToConstant: 40),
 
-            clearBtn.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
-            clearBtn.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 12.5),
+            clearBtn.bottomAnchor.constraint(equalTo: btnsContainer.bottomAnchor, constant: -5),
+            clearBtn.leadingAnchor.constraint(equalTo: btnsContainer.centerXAnchor, constant: 12.5),
             clearBtn.heightAnchor.constraint(equalToConstant: 40),
             clearBtn.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.25),
 
-            titleTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 40),
-            titleTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            titleTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            titleTextField.heightAnchor.constraint(equalToConstant: 80),
-
-            locationTextField.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 15),
-            locationTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            locationTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            locationTextField.heightAnchor.constraint(equalToConstant: 80),
-
-            priceTextField.topAnchor.constraint(equalTo: locationTextField.bottomAnchor, constant: 15),
-            priceTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            priceTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            priceTextField.heightAnchor.constraint(equalToConstant: 80),
-
-            descriptionTextField.topAnchor.constraint(equalTo: priceTextField.bottomAnchor, constant: 15),
-            descriptionTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            descriptionTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            descriptionTextField.heightAnchor.constraint(equalToConstant: 80)
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: btnsContainer.topAnchor),
         ])
     }
 
@@ -150,7 +126,11 @@ class AddNewAdViewController: UIViewController {
 
         vm.price.bind { [weak self] value in
             guard let self else { return }
-            priceTextField.setWarningMsg(text: "Invalid price (ex: 12,34)", visible: !vm.isPriceValid)
+            vm.isPriceValid ? vm.hideWarningFor(.price) : vm.showWarningFor(.price)
+        }
+
+        vm.warningsToShow.bind { [weak self] value in
+            self?.tableView.reloadData()
         }
     }
 
@@ -169,41 +149,52 @@ class AddNewAdViewController: UIViewController {
 
     private func showWarningMessages() {
 
-        if titleTextField.isFieldEmpty {
-            titleTextField.setWarningMsg(text: "Title is mandatory field. It can be empty", visible: true)
+        if vm.title?.isEmpty ?? true {
+            vm.showWarningFor(.title)
         }
 
-        if vm.isLocationValid {
-            locationTextField.setWarningMsg(text: "Title is mandatory field. It can be empty", visible: true)
+        if !vm.isLocationValid {
+            vm.showWarningFor(.location)
         }
     }
 }
 
 extension AddNewAdViewController: AddNewAdDelegate {
 
-    func textFieldChanged(text: String, vc: CustomTextFields) {
-        switch vc {
-        case titleTextField:
-            titleTextField.hideWarningMsg()
+    func textFieldChanged(text: String, type: AdCellType) {
+        switch type {
+        case .title:
+            vm.hideWarningFor(.title)
             vm.title = text
-        case locationTextField:
+        case .location:
             vm.setLocation(text)
             if vm.isLocationValid {
-                locationTextField.hideWarningMsg()
+                vm.hideWarningFor(.location)
             }
-        case priceTextField:
+        case .price:
             vm.price.value = Float(text.replacingOccurrences(of: ",", with: "."))
-        case descriptionTextField:
+        case .description:
             vm.description = text
-        default:
-            return
         }
     }
 
     func clearButtonTapped() {
-        titleTextField.config(value: "")
-        locationTextField.config(value: "")
-        priceTextField.config(value: "")
-        descriptionTextField.config(value: "")
+        vm = AddNewAdViewModel()
+        tableView.reloadData()
+    }
+}
+
+extension AddNewAdViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        MAX_NUMBER_OF_TEXTFIELDS
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTextFieldsCell.identifier) as? CustomTextFieldsCell else { return UITableViewCell() }
+        cell.backgroundColor = .brown
+        let cellType = AdCellType.allCases[indexPath.row]
+        cell.config(vm: vm, type: cellType, delegate: self)
+        return cell
     }
 }
