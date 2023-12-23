@@ -21,7 +21,7 @@ class AddNewAdViewController: UIViewController {
         return view
     }()
 
-    private let confirmBtn = {
+    private lazy var confirmBtn = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .systemGreen
@@ -29,10 +29,11 @@ class AddNewAdViewController: UIViewController {
         view.setTitle("Submit", for: .normal)
         view.titleLabel?.font = .boldSystemFont(ofSize: 12)
         view.layer.cornerRadius = 8
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(submitTapped)))
         return view
     }()
 
-    private let clearBtn = {
+    private lazy var clearBtn = {
         let view = UIButton()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .systemRed
@@ -40,6 +41,7 @@ class AddNewAdViewController: UIViewController {
         view.setTitle("Clear", for: .normal)
         view.titleLabel?.font = .boldSystemFont(ofSize: 12)
         view.layer.cornerRadius = 8
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(clearTapped)))
         return view
     }()
 
@@ -61,7 +63,7 @@ class AddNewAdViewController: UIViewController {
 
     private lazy var priceTextField = {
         let view = CustomTextFields()
-        view.config(title: "Price")
+        view.config(title: "Price (€)", numPad: true)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
         return view
@@ -132,18 +134,28 @@ class AddNewAdViewController: UIViewController {
     }
 
     private func setupBinding() {
+        
+        vm.delegate = self
+
         vm.location.bind { [weak self] value in
             guard let self else { return }
             self.vm.getSearchedLocation { result in
                 print("")
             }
         }
+
+        vm.price.bind { [weak self] value in
+            guard let self else { return }
+            priceTextField.setWarningMsg(text: "Invalid price (ex: 12,34)", visible: !vm.isPriceValid())
+        }
     }
 
     @objc private func clearTapped() {
+        vm.clearData()
     }
 
     @objc private func submitTapped() {
+        //FIXME: It supose that send to api the data
     }
 }
 
@@ -156,11 +168,18 @@ extension AddNewAdViewController: AddNewAdDelegate {
         case locationTextField:
             vm.location.value = text
         case priceTextField:
-            vm.price = Float(text)
+            vm.price.value = Float(text.replacingOccurrences(of: ",", with: "."))
         case descriptionTextField:
             vm.description = text
         default:
             return
         }
+    }
+
+    func clearButtonTapped() {
+        titleTextField.config(value: "")
+        locationTextField.config(value: "")
+        priceTextField.config(value: "")
+        descriptionTextField.config(value: "")
     }
 }

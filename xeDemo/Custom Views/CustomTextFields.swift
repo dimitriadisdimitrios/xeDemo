@@ -37,6 +37,14 @@ class CustomTextFields: UIView {
         return view
     }()
 
+    private let warningLabel = {
+        let view = UILabel()
+        view.font = .systemFont(ofSize: 8)
+        view.textColor = .red
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupUI()
@@ -51,6 +59,7 @@ class CustomTextFields: UIView {
         addSubview(titleLabel)
         addSubview(textFieldBackground)
         addSubview(fieldTextField)
+        addSubview(warningLabel)
 
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor),
@@ -67,11 +76,26 @@ class CustomTextFields: UIView {
             textFieldBackground.bottomAnchor.constraint(equalTo: fieldTextField.bottomAnchor, constant: 10),
             textFieldBackground.leadingAnchor.constraint(equalTo: fieldTextField.leadingAnchor, constant: -10),
             textFieldBackground.trailingAnchor.constraint(equalTo: fieldTextField.trailingAnchor, constant: 5),
+
+            warningLabel.topAnchor.constraint(equalTo: textFieldBackground.bottomAnchor, constant: 5),
+            warningLabel.leadingAnchor.constraint(equalTo: textFieldBackground.leadingAnchor),
+            warningLabel.trailingAnchor.constraint(equalTo: textFieldBackground.trailingAnchor),
+            warningLabel.heightAnchor.constraint(equalToConstant: 12)
         ])
     }
 
-    func config(title: String) {
-        self.titleLabel.text = title
+    func config(title: String, numPad: Bool = false) {
+        titleLabel.text = title
+        fieldTextField.keyboardType = numPad ? .decimalPad : .default
+    }
+
+    func config(value: String) {
+        fieldTextField.text = value
+    }
+
+    func setWarningMsg(text: String, visible: Bool) {
+        warningLabel.isHidden = !visible || fieldTextField.text == ""
+        warningLabel.text = text
     }
 }
 

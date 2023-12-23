@@ -10,4 +10,5 @@ import Foundation
 protocol AddNewAdDelegate: AnyObject {
 
     func textFieldChanged(text: String, vc: CustomTextFields)
+    func clearButtonTapped()
 }
