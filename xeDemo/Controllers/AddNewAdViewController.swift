@@ -11,6 +11,10 @@ class AddNewAdViewController: UIViewController {
 
     private let vm = AddNewAdViewModel()
 
+    private var areRequirementsFullfilled: Bool {
+        titleTextField.isFieldEmpty || vm.isLocationValid
+    }
+
     private let titleLabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -146,7 +150,7 @@ class AddNewAdViewController: UIViewController {
 
         vm.price.bind { [weak self] value in
             guard let self else { return }
-            priceTextField.setWarningMsg(text: "Invalid price (ex: 12,34)", visible: !vm.isPriceValid())
+            priceTextField.setWarningMsg(text: "Invalid price (ex: 12,34)", visible: !vm.isPriceValid)
         }
     }
 
@@ -155,7 +159,23 @@ class AddNewAdViewController: UIViewController {
     }
 
     @objc private func submitTapped() {
-        //FIXME: It supose that send to api the data
+        guard areRequirementsFullfilled else {
+            showWarningMessages()
+            return
+        }
+        //FIXME: Open new vc to show the json
+        vm.clearData()
+    }
+
+    private func showWarningMessages() {
+
+        if titleTextField.isFieldEmpty {
+            titleTextField.setWarningMsg(text: "Title is mandatory field. It can be empty", visible: true)
+        }
+
+        if vm.isLocationValid {
+            locationTextField.setWarningMsg(text: "Title is mandatory field. It can be empty", visible: true)
+        }
     }
 }
 
@@ -164,9 +184,13 @@ extension AddNewAdViewController: AddNewAdDelegate {
     func textFieldChanged(text: String, vc: CustomTextFields) {
         switch vc {
         case titleTextField:
+            titleTextField.hideWarningMsg()
             vm.title = text
         case locationTextField:
-            vm.location.value = text
+            vm.setLocation(text)
+            if vm.isLocationValid {
+                locationTextField.hideWarningMsg()
+            }
         case priceTextField:
             vm.price.value = Float(text.replacingOccurrences(of: ",", with: "."))
         case descriptionTextField:

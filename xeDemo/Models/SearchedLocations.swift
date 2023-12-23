@@ -12,6 +12,24 @@ struct SearchedLocation: Codable {
     let placeId: String
     let mainText: String
     let secondaryText: String
+    
+    init() {
+        placeId = ""
+        mainText = ""
+        secondaryText = ""
+    }
+
+    init(mainText: String) {
+        placeId = ""
+        self.mainText = mainText
+        secondaryText = ""
+    }
+
+    init(placeId: String, mainText: String, secondaryText: String) {
+        self.placeId = placeId
+        self.mainText = mainText
+        self.secondaryText = secondaryText
+    }
 
     static func create(textToSearch: String, vm: AddNewAdViewModel) -> Resource<[SearchedLocation]> {
 

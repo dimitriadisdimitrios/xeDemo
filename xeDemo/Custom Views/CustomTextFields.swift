@@ -10,6 +10,10 @@ import UIKit
 class CustomTextFields: UIView {
 
     weak var delegate: AddNewAdDelegate?
+    
+    var isFieldEmpty: Bool {
+        fieldTextField.text == "" || fieldTextField.text == nil
+    }
 
     private let titleLabel = {
         let view = UILabel()
@@ -96,6 +100,10 @@ class CustomTextFields: UIView {
     func setWarningMsg(text: String, visible: Bool) {
         warningLabel.isHidden = !visible || fieldTextField.text == ""
         warningLabel.text = text
+    }
+
+    func hideWarningMsg() {
+        warningLabel.isHidden = true
     }
 }
 
