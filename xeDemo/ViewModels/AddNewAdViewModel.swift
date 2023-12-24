@@ -87,6 +87,7 @@ class AddNewAdViewModel {
         price = ""
         description = ""
         warningsToShow.value = []
+        resultsToShow = []
         delegate?.clearButtonTapped()
     }
 
