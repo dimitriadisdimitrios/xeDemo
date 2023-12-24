@@ -60,6 +60,12 @@ class CustomTextFieldsCell: UITableViewCell {
         return view
     }()
 
+    private let emptyView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -72,12 +78,21 @@ class CustomTextFieldsCell: UITableViewCell {
     
     private func setupUI() {
 
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
         contentView.addSubview(titleLabel)
+        contentView.addSubview(emptyView)
         contentView.addSubview(textFieldBackground)
         contentView.addSubview(fieldTextField)
         contentView.addSubview(warningLabel)
 
         NSLayoutConstraint.activate([
+
+            emptyView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            emptyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            emptyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            emptyView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+
             titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
