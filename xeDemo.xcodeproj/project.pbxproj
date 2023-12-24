@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		78AC7A1299156026DB5CDF7C /* Pods_xeDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A0621FAB81266820A193CD0 /* Pods_xeDemo.framework */; };
 		E80CA3D82B34AC3900F012DE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3D72B34AC3900F012DE /* AppDelegate.swift */; };
 		E80CA3DA2B34AC3900F012DE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3D92B34AC3900F012DE /* SceneDelegate.swift */; };
 		E80CA3DC2B34AC3900F012DE /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA3DB2B34AC3900F012DE /* ViewController.swift */; };
@@ -28,6 +29,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		32EB909F1B3BBD07888D33E8 /* Pods-xeDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xeDemo.release.xcconfig"; path = "Target Support Files/Pods-xeDemo/Pods-xeDemo.release.xcconfig"; sourceTree = "<group>"; };
+		6A0621FAB81266820A193CD0 /* Pods_xeDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_xeDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A894246775127EE6D0DFBC9E /* Pods-xeDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-xeDemo.debug.xcconfig"; path = "Target Support Files/Pods-xeDemo/Pods-xeDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		E80CA3D42B34AC3900F012DE /* xeDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = xeDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E80CA3D72B34AC3900F012DE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E80CA3D92B34AC3900F012DE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -48,6 +52,7 @@
 		E80CA4072B37395D00F012DE /* NewAdForSubmit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAdForSubmit.swift; sourceTree = "<group>"; };
 		E80CA4092B37496700F012DE /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		E80CA40B2B384E8300F012DE /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
+		E8C61A052B3875030010A9AE /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,17 +60,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78AC7A1299156026DB5CDF7C /* Pods_xeDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7B2660D8931E59F3D1E917FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E8C61A052B3875030010A9AE /* Alamofire.framework */,
+				6A0621FAB81266820A193CD0 /* Pods_xeDemo.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DC79562F2256F0CA8EF5B4E1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A894246775127EE6D0DFBC9E /* Pods-xeDemo.debug.xcconfig */,
+				32EB909F1B3BBD07888D33E8 /* Pods-xeDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E80CA3CB2B34AC3900F012DE = {
 			isa = PBXGroup;
 			children = (
 				E80CA3D62B34AC3900F012DE /* xeDemo */,
 				E80CA3D52B34AC3900F012DE /* Products */,
+				DC79562F2256F0CA8EF5B4E1 /* Pods */,
+				7B2660D8931E59F3D1E917FD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -166,9 +192,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E80CA3E82B34AC3A00F012DE /* Build configuration list for PBXNativeTarget "xeDemo" */;
 			buildPhases = (
+				94F4C1817467E3C77707C3EF /* [CP] Check Pods Manifest.lock */,
 				E80CA3D02B34AC3900F012DE /* Sources */,
 				E80CA3D12B34AC3900F012DE /* Frameworks */,
 				E80CA3D22B34AC3900F012DE /* Resources */,
+				3BAF57BA8F88C232AF065FF2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -223,6 +251,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3BAF57BA8F88C232AF065FF2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-xeDemo/Pods-xeDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-xeDemo/Pods-xeDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-xeDemo/Pods-xeDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		94F4C1817467E3C77707C3EF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-xeDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E80CA3D02B34AC3900F012DE /* Sources */ = {
@@ -383,18 +453,21 @@
 		};
 		E80CA3E92B34AC3A00F012DE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A894246775127EE6D0DFBC9E /* Pods-xeDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 693WG73N65;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = xeDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -410,18 +483,21 @@
 		};
 		E80CA3EA2B34AC3A00F012DE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 32EB909F1B3BBD07888D33E8 /* Pods-xeDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 693WG73N65;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = xeDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

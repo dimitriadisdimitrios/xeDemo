@@ -6,12 +6,16 @@
 //
 
 import UIKit
+import DropDown
 
 class CustomTextFieldsCell: UITableViewCell {
 
     weak var delegate: AddNewAdDelegate?
     static let identifier = "CustomTextFields"
     private var cellType: AdCellType!
+    private var needToShowResult = false
+    private var resultsPanelIsOpen = false
+    private var locationsDataSource: [(String , SearchedLocation)] = []
     private lazy var fieldTextViewHeightConstraint = fieldTextField.heightAnchor.constraint(equalToConstant: 20)
 
     var isFieldEmpty: Bool {
@@ -66,6 +70,19 @@ class CustomTextFieldsCell: UITableViewCell {
         return view
     }()
 
+    private lazy var dropDownView = {
+        let view = DropDown(anchorView: warningLabel)
+        view.dismissMode = .manual
+        view.selectionAction = { [weak self] index, item in
+            guard let self else { return }
+            resultsPanelIsOpen = false
+            fieldTextField.text = item
+            guard let location = locationsDataSource.first(where: { $0.0 == item }) else { return }
+            delegate?.locationSelected(location: location.1)
+        }
+        return view
+    }()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
@@ -88,7 +105,7 @@ class CustomTextFieldsCell: UITableViewCell {
 
         NSLayoutConstraint.activate([
 
-            emptyView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            emptyView.topAnchor.constraint(equalTo: textFieldBackground.topAnchor),
             emptyView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             emptyView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             emptyView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
@@ -123,9 +140,16 @@ class CustomTextFieldsCell: UITableViewCell {
         titleLabel.text = type.tilte
         fieldTextField.keyboardType = type == .price ? .decimalPad : .default
         fieldTextField.isScrollEnabled = type == .description
+        fieldTextField.textContainer.maximumNumberOfLines = type == .description ? 0 : 1
         setTextInTextfield(vm)
         setWarningMsg(viewModel: vm)
         setFieldsHeight(viewModel: vm)
+        needToShowResult = vm.needToShowResult(cellType)
+        if needToShowResult {
+            locationsDataSource = vm.getLocationsForPanel()
+            dropDownView.dataSource = locationsDataSource.map { $0.0 }
+            showResultsPanel()
+        }
     }
 
     private func setFieldsHeight(viewModel: AddNewAdViewModel) {
@@ -180,6 +204,23 @@ class CustomTextFieldsCell: UITableViewCell {
 
         return CGFloat(numberOfLines)
     }
+
+    private func showResultsPanel() {
+        guard needToShowResult, !resultsPanelIsOpen, dropDownView.dataSource.count > 0 else {
+            if dropDownView.dataSource.count == 0 {
+                resultsPanelIsOpen = false
+            }
+            return
+        }
+        resultsPanelIsOpen = true
+        dropDownView.show()
+    }
+
+    private func hideResultsPanel() {
+        guard needToShowResult else { return }
+        resultsPanelIsOpen = false
+        dropDownView.hide()
+    }
 }
 
 extension CustomTextFieldsCell: UITextViewDelegate {
@@ -187,6 +228,7 @@ extension CustomTextFieldsCell: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         guard let text = textView.text else { return }
         delegate?.textFieldChanged(text: text, type: cellType)
+        showResultsPanel()
     }
 
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -199,6 +241,7 @@ extension CustomTextFieldsCell: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             addPlaceholder()
+            hideResultsPanel()
         }
     }
 

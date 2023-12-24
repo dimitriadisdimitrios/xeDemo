@@ -14,8 +14,14 @@ class AddNewAdViewModel {
     var price: String = ""
     var description: String?
     var warningsToShow: DynamicVar<[AdCellType]> = DynamicVar([])
+    var resultsToShow: [SearchedLocation] = []
 
     weak var delegate: AddNewAdDelegate?
+
+
+    lazy var needToShowResult: (AdCellType) -> Bool = { [weak self] type in
+        type == .location
+    }
 
     lazy var isWarningActivateFor: (AdCellType) -> Bool = { [weak self] type in
         guard let self else { return false }
@@ -44,11 +50,13 @@ class AddNewAdViewModel {
         guard location.value.mainText.count > 2 else {
             return
         }
-        WebService.load(resource: SearchedLocation.create(textToSearch: location.value.mainText, vm: self)) { result in
+        WebService.load(resource: SearchedLocation.create(textToSearch: location.value.mainText, vm: self)) { [weak self] result in
             switch result {
             case .success(let locations):
+                self?.resultsToShow = locations
                 callback(locations)
             case .failure(let error):
+                self?.resultsToShow = []
                 print(error)
             }
         }
@@ -68,6 +76,14 @@ class AddNewAdViewModel {
         //FIXME: Set the right location instead of this
         //FIXME: Add locationObject in vm
         location.value = SearchedLocation(mainText: text)
+    }
+
+    func getLocationsText() -> [String] {
+        resultsToShow.compactMap { $0.mainText + " || " + $0.secondaryText }
+    }
+
+    func getLocationsForPanel() -> [(String, SearchedLocation)] {
+        resultsToShow.compactMap { ($0.mainText + " || " + $0.secondaryText, $0) }
     }
 
     func showWarningFor(_ type: AdCellType) {

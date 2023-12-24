@@ -95,7 +95,7 @@ class AddNewAdViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: btnsContainer.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: btnsContainer.topAnchor, constant: -50),
         ])
     }
 
@@ -105,8 +105,9 @@ class AddNewAdViewController: UIViewController {
 
         vm.location.bind { [weak self] value in
             guard let self else { return }
-            self.vm.getSearchedLocation { result in
-                print("")
+            self.vm.getSearchedLocation { [weak self] _ in
+                guard let self else { return }
+                reloadCell(cellType: .location)
             }
         }
 
@@ -169,6 +170,11 @@ class AddNewAdViewController: UIViewController {
 }
 
 extension AddNewAdViewController: AddNewAdDelegate {
+    
+    func locationSelected(location: SearchedLocation) {
+        vm.location.value = location
+    }
+    
 
     func textFieldChanged(text: String, type: AdCellType) {
         switch type {
