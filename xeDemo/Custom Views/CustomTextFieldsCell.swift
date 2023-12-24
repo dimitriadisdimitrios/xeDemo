@@ -12,9 +12,18 @@ class CustomTextFieldsCell: UITableViewCell {
     weak var delegate: AddNewAdDelegate?
     static let identifier = "CustomTextFields"
     private var cellType: AdCellType!
+    private lazy var fieldTextViewHeightConstraint = fieldTextField.heightAnchor.constraint(equalToConstant: 20)
 
     var isFieldEmpty: Bool {
-        fieldTextField.text == "" || fieldTextField.text == nil
+        fieldTextField.text.isEmpty || fieldTextField.text == nil
+    }
+
+    var isFieldFirstResponder: Bool {
+        fieldTextField.isFirstResponder
+    }
+
+    var typeOfCell: AdCellType {
+        cellType
     }
 
     private let titleLabel = {
@@ -26,11 +35,11 @@ class CustomTextFieldsCell: UITableViewCell {
     }()
 
     private lazy var fieldTextField = {
-        let view = UITextField()
+        let view = UITextView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.placeholder = "Type something"
         view.font = .systemFont(ofSize: 13)
         view.backgroundColor = .clear
+        view.isEditable = true
         view.delegate = self
         return view
     }()
@@ -69,7 +78,7 @@ class CustomTextFieldsCell: UITableViewCell {
         contentView.addSubview(warningLabel)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
             titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
@@ -77,7 +86,6 @@ class CustomTextFieldsCell: UITableViewCell {
             fieldTextField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             fieldTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 24),
             fieldTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -24),
-            fieldTextField.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
             fieldTextField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -30),
 
             textFieldBackground.topAnchor.constraint(equalTo: fieldTextField.topAnchor, constant: -5),
@@ -93,12 +101,28 @@ class CustomTextFieldsCell: UITableViewCell {
     }
 
     func config(vm: AddNewAdViewModel, type: AdCellType, delegate: AddNewAdDelegate) {
-        titleLabel.text = type.tilte
-        fieldTextField.keyboardType = type == .price ? .decimalPad : .default
+
         self.delegate = delegate
         cellType = type
+
+        titleLabel.text = type.tilte
+        fieldTextField.keyboardType = type == .price ? .decimalPad : .default
+        fieldTextField.isScrollEnabled = type == .description
         setTextInTextfield(vm)
         setWarningMsg(viewModel: vm)
+        setFieldsHeight(viewModel: vm)
+    }
+
+    private func setFieldsHeight(viewModel: AddNewAdViewModel) {
+        guard viewModel.isFieldWithDyncamicHeight(cellType) else {
+            fieldTextViewHeightConstraint.constant = viewModel.heightForTextfield(cellType)
+            fieldTextViewHeightConstraint.isActive = true
+            return
+        }
+        let heightToCoverText = calculateNumberOfLines() * 15.6
+        fieldTextViewHeightConstraint.constant = heightToCoverText > viewModel.heightForTextfield(cellType) ? heightToCoverText : viewModel.heightForTextfield(cellType)
+        fieldTextViewHeightConstraint.isActive = true
+
     }
 
     private func setTextInTextfield(_ viewModel: AddNewAdViewModel) {
@@ -109,25 +133,62 @@ class CustomTextFieldsCell: UITableViewCell {
         case .location:
             textValue = viewModel.location.value.mainText
         case .price:
-            textValue = "\(viewModel.price.value)"
+            textValue = "\(viewModel.price)"
         case .description:
             textValue = viewModel.description ?? ""
         case .none:
             return
         }
         fieldTextField.text = textValue
+        if textValue.isEmpty {
+            addPlaceholder()
+        }
     }
 
     func setWarningMsg(viewModel: AddNewAdViewModel) {
-        warningLabel.isHidden = !viewModel.isWarningActivateFor(cellType) || fieldTextField.text == ""
+        warningLabel.isHidden = !viewModel.isWarningActivateFor(cellType) || fieldTextField.text.isEmpty
         warningLabel.text = cellType.warningMessage
+    }
+
+    func makeViewFirstResponder(type: AdCellType) {
+        guard type == cellType else { return }
+        fieldTextField.becomeFirstResponder()
+    }
+
+    private func calculateNumberOfLines() -> CGFloat {
+        fieldTextField.layoutIfNeeded()
+        let maxSize = CGSize(width: fieldTextField.bounds.width, height: CGFloat.greatestFiniteMagnitude)
+        let sizeThatFits = fieldTextField.sizeThatFits(maxSize)
+
+        let lineHeight = fieldTextField.font?.lineHeight ?? 0
+        let numberOfLines = Int(sizeThatFits.height / lineHeight)
+
+        return CGFloat(numberOfLines)
     }
 }
 
-extension CustomTextFieldsCell: UITextFieldDelegate {
+extension CustomTextFieldsCell: UITextViewDelegate {
 
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        guard let text = textField.text else { return }
+    func textViewDidChange(_ textView: UITextView) {
+        guard let text = textView.text else { return }
         delegate?.textFieldChanged(text: text, type: cellType)
+    }
+
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            addPlaceholder()
+        }
+    }
+
+    private func addPlaceholder() {
+        fieldTextField.text = "Type something..."
+        fieldTextField.textColor = UIColor.lightGray
     }
 }

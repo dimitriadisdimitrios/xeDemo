@@ -10,21 +10,12 @@ import UIKit
 class AddNewAdViewController: UIViewController {
 
     private var vm = AddNewAdViewModel()
-    private let MAX_NUMBER_OF_TEXTFIELDS = AdCellType.allCases.count
+    private let HEADER_CELLS_NUMBER = 1
+    private lazy var MAX_NUMBER_OF_TEXTFIELDS = AdCellType.allCases.count + HEADER_CELLS_NUMBER //Header
 
     private var areRequirementsFullfilled: Bool {
         !(vm.title?.isEmpty ?? true) || vm.isLocationValid
-    }
-
-    private let titleLabel = {
-        let view = UILabel()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.font = .boldSystemFont(ofSize: 17)
-        view.textColor = .black
-        view.numberOfLines = 0
-        view.text = "New Property Classified"
-        return view
-    }()
+    }    
 
     private let btnsContainer = {
         let view = UIView()
@@ -62,6 +53,7 @@ class AddNewAdViewController: UIViewController {
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.register(CustomTextFieldsCell.self, forCellReuseIdentifier: CustomTextFieldsCell.identifier)
+        view.register(HeaderCell.self, forCellReuseIdentifier: HeaderCell.identifier)
         view.bounces = false
         view.separatorStyle = .none
         view.dataSource = self
@@ -79,18 +71,12 @@ class AddNewAdViewController: UIViewController {
 
         view.backgroundColor = .white.withAlphaComponent(0.9)
 
-        view.addSubview(titleLabel)
         view.addSubview(btnsContainer)
         view.addSubview(tableView)
         btnsContainer.addSubview(confirmBtn)
         btnsContainer.addSubview(clearBtn)
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            titleLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20),
-
             btnsContainer.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             btnsContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             btnsContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -124,15 +110,36 @@ class AddNewAdViewController: UIViewController {
             }
         }
 
-        vm.price.bind { [weak self] value in
-            guard let self else { return }
-            tableView.beginUpdates()
-            vm.isPriceValid ? vm.hideWarningFor(.price) : vm.showWarningFor(.price)
-            tableView.endUpdates()
-        }
-
         vm.warningsToShow.bind { [weak self] value in
-            self?.tableView.reloadData()
+            guard let self else { return }
+            let indexesToUpdate = value.compactMap { AdCellType.allCases.firstIndex(of: $0) }.map {Int($0)}
+            reloadCell(indexesToUpdate: indexesToUpdate)
+        }
+    }
+
+    func reloadCell(cellType: AdCellType) {
+        guard let index = AdCellType.allCases.firstIndex(of: cellType) else { return }
+        reloadCell(indexesToUpdate: [index])
+    }
+
+    func reloadCell(indexesToUpdate: [Int]) {
+
+        var rowOfFirstResponder: Int?
+        var IndexPathsToReload: [IndexPath] = []
+
+        indexesToUpdate.forEach {
+            let indexPath = IndexPath(row: $0 + HEADER_CELLS_NUMBER, section: 0)
+            IndexPathsToReload.append(indexPath)
+            if let cell = tableView.cellForRow(at: indexPath) as? CustomTextFieldsCell, cell.isFieldFirstResponder {
+                rowOfFirstResponder = $0
+            }
+        }
+        tableView.beginUpdates()
+        tableView.reloadRows(at: IndexPathsToReload, with: .none)
+        tableView.endUpdates()
+
+        if let rowOfFirstResponder, let cellOfFirstResponder = tableView.cellForRow(at: IndexPath(row: rowOfFirstResponder + HEADER_CELLS_NUMBER, section: 0)) as? CustomTextFieldsCell {
+            cellOfFirstResponder.makeViewFirstResponder(type: cellOfFirstResponder.typeOfCell)
         }
     }
 
@@ -174,10 +181,12 @@ extension AddNewAdViewController: AddNewAdDelegate {
                 vm.hideWarningFor(.location)
             }
         case .price:
-            vm.price.value = text
+            vm.price = text
+            vm.isPriceValid || text.isEmpty ? vm.hideWarningFor(.price) : vm.showWarningFor(.price)
         case .description:
             vm.description = text
         }
+        reloadCell(cellType: type)
     }
 
     func clearButtonTapped() {
@@ -192,9 +201,11 @@ extension AddNewAdViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard indexPath.row != 0 else {
+            return tableView.dequeueReusableCell(withIdentifier: HeaderCell.identifier) ?? UITableViewCell()
+        }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomTextFieldsCell.identifier) as? CustomTextFieldsCell else { return UITableViewCell() }
-        cell.backgroundColor = .brown
-        let cellType = AdCellType.allCases[indexPath.row]
+        let cellType = AdCellType.allCases[indexPath.row - HEADER_CELLS_NUMBER]
         cell.config(vm: vm, type: cellType, delegate: self)
         return cell
     }

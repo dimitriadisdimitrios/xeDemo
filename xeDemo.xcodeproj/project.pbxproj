@@ -24,6 +24,7 @@
 		E80CA4062B35F50200F012DE /* SearchedLocations.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA4052B35F50200F012DE /* SearchedLocations.swift */; };
 		E80CA4082B37395D00F012DE /* NewAdForSubmit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA4072B37395D00F012DE /* NewAdForSubmit.swift */; };
 		E80CA40A2B37496700F012DE /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA4092B37496700F012DE /* File.swift */; };
+		E80CA40C2B384E8300F012DE /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E80CA40B2B384E8300F012DE /* HeaderCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		E80CA4052B35F50200F012DE /* SearchedLocations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchedLocations.swift; sourceTree = "<group>"; };
 		E80CA4072B37395D00F012DE /* NewAdForSubmit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewAdForSubmit.swift; sourceTree = "<group>"; };
 		E80CA4092B37496700F012DE /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		E80CA40B2B384E8300F012DE /* HeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				E80CA3FD2B34C7CB00F012DE /* CustomTextFieldsCell.swift */,
+				E80CA40B2B384E8300F012DE /* HeaderCell.swift */,
 			);
 			path = "Custom Views";
 			sourceTree = "<group>";
@@ -230,6 +233,7 @@
 				E80CA3F92B34B4C700F012DE /* NetworkError.swift in Sources */,
 				E80CA3D82B34AC3900F012DE /* AppDelegate.swift in Sources */,
 				E80CA3F62B34B46200F012DE /* HTTPMethod.swift in Sources */,
+				E80CA40C2B384E8300F012DE /* HeaderCell.swift in Sources */,
 				E80CA3FB2B34B7D700F012DE /* AddNewAdViewModel.swift in Sources */,
 				E80CA4082B37395D00F012DE /* NewAdForSubmit.swift in Sources */,
 				E80CA3EF2B34AED400F012DE /* AddNewAdViewController.swift in Sources */,

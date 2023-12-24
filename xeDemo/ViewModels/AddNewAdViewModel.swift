@@ -11,7 +11,7 @@ class AddNewAdViewModel {
 
     var title: String?
     var location: DynamicVar<SearchedLocation> = DynamicVar(SearchedLocation())
-    var price: DynamicVar<String> = DynamicVar("")
+    var price: String = ""
     var description: String?
     var warningsToShow: DynamicVar<[AdCellType]> = DynamicVar([])
 
@@ -28,10 +28,17 @@ class AddNewAdViewModel {
 
     var isPriceValid: Bool {
         guard let regex = try? NSRegularExpression(pattern: "^\\d+((\\.|,)\\d+){0,1}$", options: []) else { return false }
-        let matches = regex.matches(in: "\(price.value)", options: [], range: NSRange(location: 0, length: "\(price.value)".utf16.count))
+        let matches = regex.matches(in: "\(price)", options: [], range: NSRange(location: 0, length: "\(price)".utf16.count))
         return !matches.isEmpty
     }
 
+    var isFieldWithDyncamicHeight: (AdCellType)->Bool = { type in
+        type == .description
+    }
+
+    var heightForTextfield: (AdCellType)->CGFloat = { type in
+        type == .description ? 80 : 30
+    }
 
     func getSearchedLocation(callback: @escaping([SearchedLocation]) -> Void) {
         guard location.value.mainText.count > 2 else {
@@ -50,8 +57,9 @@ class AddNewAdViewModel {
     func clearData() {
         title = ""
         location.value = SearchedLocation()
-        price.value = ""
+        price = ""
         description = ""
+        warningsToShow.value = []
         delegate?.clearButtonTapped()
     }
 
