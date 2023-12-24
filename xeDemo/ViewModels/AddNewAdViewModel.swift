@@ -15,9 +15,9 @@ class AddNewAdViewModel {
     var description: String?
     var warningsToShow: DynamicVar<[AdCellType]> = DynamicVar([])
     var resultsToShow: [SearchedLocation] = []
+    var byPassGetResults = false
 
     weak var delegate: AddNewAdDelegate?
-
 
     lazy var needToShowResult: (AdCellType) -> Bool = { [weak self] type in
         type == .location
@@ -30,6 +30,13 @@ class AddNewAdViewModel {
 
     var isLocationValid:  Bool {
         location.value.mainText != "" && location.value.placeId != ""
+    }
+
+    var locationText: String {
+        if location.value.secondaryText == "" {
+            return location.value.mainText
+        }
+        return location.value.mainText + " || " + location.value.secondaryText
     }
 
     var isPriceValid: Bool {
@@ -47,7 +54,9 @@ class AddNewAdViewModel {
     }
 
     func getSearchedLocation(callback: @escaping([SearchedLocation]) -> Void) {
-        guard location.value.mainText.count > 2 else {
+        guard location.value.mainText.count > 2, !byPassGetResults else {
+            byPassGetResults = false
+            callback([])
             return
         }
         WebService.load(resource: SearchedLocation.create(textToSearch: location.value.mainText, vm: self)) { [weak self] result in
@@ -57,9 +66,19 @@ class AddNewAdViewModel {
                 callback(locations)
             case .failure(let error):
                 self?.resultsToShow = []
+                callback([])
                 print(error)
             }
         }
+    }
+
+    func submitForm(callback: @escaping(String) -> Void) {
+        let resource = NewAdForSubmit.createForSubmit(vm: self)
+        guard let data = resource.body else {            
+            return
+        }
+        let body = String(decoding: data, as: UTF8.self)
+        callback(body)
     }
 
     func clearData() {
@@ -69,17 +88,6 @@ class AddNewAdViewModel {
         description = ""
         warningsToShow.value = []
         delegate?.clearButtonTapped()
-    }
-
-
-    func setLocation(_ text: String) {
-        //FIXME: Set the right location instead of this
-        //FIXME: Add locationObject in vm
-        location.value = SearchedLocation(mainText: text)
-    }
-
-    func getLocationsText() -> [String] {
-        resultsToShow.compactMap { $0.mainText + " || " + $0.secondaryText }
     }
 
     func getLocationsForPanel() -> [(String, SearchedLocation)] {

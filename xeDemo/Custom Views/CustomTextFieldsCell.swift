@@ -170,7 +170,7 @@ class CustomTextFieldsCell: UITableViewCell {
         case .title:
             textValue = viewModel.title ?? ""
         case .location:
-            textValue = viewModel.location.value.mainText
+            textValue = viewModel.locationText
         case .price:
             textValue = "\(viewModel.price)"
         case .description:
@@ -209,6 +209,9 @@ class CustomTextFieldsCell: UITableViewCell {
         guard needToShowResult, !resultsPanelIsOpen, dropDownView.dataSource.count > 0 else {
             if dropDownView.dataSource.count == 0 {
                 resultsPanelIsOpen = false
+            }
+            if fieldTextField.text.count < 2 {
+                hideResultsPanel()
             }
             return
         }

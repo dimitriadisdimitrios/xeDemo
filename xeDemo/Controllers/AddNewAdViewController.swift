@@ -95,7 +95,7 @@ class AddNewAdViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: btnsContainer.topAnchor, constant: -50),
+            tableView.bottomAnchor.constraint(equalTo: btnsContainer.topAnchor),
         ])
     }
 
@@ -105,9 +105,11 @@ class AddNewAdViewController: UIViewController {
 
         vm.location.bind { [weak self] value in
             guard let self else { return }
-            self.vm.getSearchedLocation { [weak self] _ in
-                guard let self else { return }
-                reloadCell(cellType: .location)
+            self.vm.getSearchedLocation {  _ in
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    reloadCell(cellType: .location)
+                }
             }
         }
 
@@ -153,7 +155,14 @@ class AddNewAdViewController: UIViewController {
             showWarningMessages()
             return
         }
-        //FIXME: Open new vc to show the json
+        vm.submitForm { body in
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                let navigation = UIAlertController(title: body, message: nil, preferredStyle: .alert)
+                navigation.addAction(UIAlertAction(title: "ok", style: .default))
+                present(navigation, animated: true, completion: nil)
+            }
+        }
         vm.clearData()
     }
 
@@ -172,6 +181,7 @@ class AddNewAdViewController: UIViewController {
 extension AddNewAdViewController: AddNewAdDelegate {
     
     func locationSelected(location: SearchedLocation) {
+        vm.byPassGetResults = true
         vm.location.value = location
     }
     
@@ -182,7 +192,7 @@ extension AddNewAdViewController: AddNewAdDelegate {
             vm.hideWarningFor(.title)
             vm.title = text
         case .location:
-            vm.setLocation(text)
+            vm.location.value = SearchedLocation(mainText: text)
             if vm.isLocationValid {
                 vm.hideWarningFor(.location)
             }

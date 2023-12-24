@@ -10,4 +10,5 @@ struct Resource<T: Codable> {
     var url: URL
     var httpMethod: HTTPMethod = .get
     var body: Data? = nil
+    
 }
